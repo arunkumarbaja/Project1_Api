@@ -50,7 +50,7 @@ namespace Project1_Api.Controllers
                 var token = await _authService.GenerateTokenAsync(model.Email);
 
                 // sending mail that you have logged in
-                var body = $"You have logged in if not you report";
+                var body = $"You have logged in  successfully if not you report";
                 var subject = $"Login Successfull";
                 await _emailService.SendEmailAsync(model.Email!,subject,body);
 

@@ -1,0 +1,80 @@
+﻿@model List<DTO.ProductDTO.ProductDto>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2 class="mb-4">Product List</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">➕ Add New Product</a>
+</p>
+
+<table class="table table-bordered table-striped table-hover align-middle" id="employeTabl">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>SKU</th>
+            <th>Stock</th>
+            <th>Available</th>
+            <th>Category</th>
+            <th>Created Date</th>
+            <th>Image</th>
+            <th style="width:180px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Price.ToString("C")</td>
+                <td>@product.Sku</td>
+                <td>@product.StockQuantity</td>
+                <td>
+                    @if (product.IsAvailable)
+                    {
+                        <span class="badge bg-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">No</span>
+                    }
+                </td>
+                <td>@product.CategoryName</td>
+                <td>@product.DateCreated.ToShortDateString()</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                    {
+                        <img src="@product.ImageUrl" alt="@product.Name" width="60" height="60" class="img-thumbnail" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Image</span>
+                    }
+                </td>
+                <td>
+                    <div class="d-flex flex-column gap-1">
+                        <a asp-action="Details" asp-route-id="@product.Id" class="btn btn-sm btn-info w-100">Details</a>
+                        <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-warning w-100">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-danger w-100"
+                           onclick="return confirm('Are you sure you want to delete @product.Name?');">Delete</a>
+                    </div>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#employeTable').DataTable();
+        });
+    </script>
+}
+

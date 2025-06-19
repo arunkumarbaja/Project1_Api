@@ -1,11 +1,15 @@
+using BBL.ECommerceServices.CategoryService;
+using BBL.ECommerceServices.OrderService;
+using BBL.ECommerceServices.ProductService;
+using BBL.ECommerceServices.ShoppingServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Project1.Data;
 using Project1_Api.AuthService;
+using Project1_Api.Data;
 using Project1_Api.NewFolder;
 using System.Security.Claims;
 using System.Text;
@@ -20,12 +24,14 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
-
+//---------adding db context service
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),x=>x.MigrationsAssembly("DAL"));
 });
 
+
+ // --------adding identity service
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 {
     options.Password.RequireNonAlphanumeric = false;
@@ -68,7 +74,17 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-builder.Services.AddTransient<IEmailService,EmailService>();    
+//----------adding email service
+
+builder.Services.AddTransient<IEmailService,EmailService>();
+
+//----------adding ecommerce related services
+
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

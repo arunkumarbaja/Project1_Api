@@ -1,0 +1,17 @@
+﻿@using DTO.ProductDTO
+@model ProductDto
+
+<h2>Confirm Delete</h2>
+<p>Are you sure you want to delete this product?</p>
+
+<div>
+    <strong>Name:</strong> @Model.Name<br />
+    <strong>Price:</strong> @Model.Price<br />
+    <strong>Stock:</strong> @Model.StockQuantity<br />
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,4 +1,5 @@
-﻿using DTO.ShoppingCart;
+﻿using Domain;
+using DTO.ShoppingCart;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -23,12 +24,13 @@ namespace Web.Controllers
 
             private void SetToken()
             {
-                var token = _contextAccessor.HttpContext?.Request.Cookies["access_token"];
-                if (!string.IsNullOrWhiteSpace(token))
+                var cookie = _contextAccessor.HttpContext?.Request.Cookies[".AspNetCore.Cookies"];
+                if (!string.IsNullOrEmpty(cookie))
                 {
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                _httpClient.DefaultRequestHeaders.Remove("Cookie");
+                _httpClient.DefaultRequestHeaders.Add("Cookie", $".AspNetCore.Cookies={cookie}");
                 }
-            }
+        }
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -60,7 +62,7 @@ namespace Web.Controllers
         [HttpPost]
 
         public async Task<IActionResult> Add(AddToCartDto dto)
-            {
+         {
             if (dto.ProductId == Guid.Empty)
                 return BadRequest("ProductId is required");
 
@@ -78,7 +80,7 @@ namespace Web.Controllers
    
                if (response.IsSuccessStatusCode)
                {
-                  return RedirectToAction("Index");
+                  return RedirectToAction("Index","Home");
                }
                else
                {
@@ -93,23 +95,48 @@ namespace Web.Controllers
 
                return BadRequest("Failed to add item to cart.");
         }
+        // Optional: increase Quantity
 
+        [HttpPost]
+        public async Task<IActionResult> IncreaseQuantity(Guid itemId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            SetToken();
+            await _httpClient.PostAsync($"api/ShoppingCart/increase/{itemId}/{userId}", null);
+            return RedirectToAction("Index");
+        }
 
-    public async Task<IActionResult> Remove(Guid id)
+        // Optional: Decrease Quantity
+        [HttpPost]
+        public async Task<IActionResult> DecreaseQuantity(Guid itemId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            SetToken();
+            await _httpClient.PostAsync($"api/ShoppingCart/decrease/{itemId}/{userId}", null);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Remove(Guid itemId)
             {
-                SetToken();
-                var response = await _httpClient.DeleteAsync($"api/ShoppingCart/{id}");
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            SetToken();
+                var response = await _httpClient.DeleteAsync($"api/ShoppingCart/{itemId}/{userId}");
                 return RedirectToAction("Index");
             }
 
-            public async Task<IActionResult> Clear()
-            {
+        [HttpPost]
+        public async Task<IActionResult> Clear()
+        {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
                 SetToken();
-                var response = await _httpClient.DeleteAsync("api/ShoppingCart/clear");
-                return RedirectToAction("Index");
+            var response = await _httpClient.DeleteAsync($"api/ShoppingCart/clear/{userId}");
+            return RedirectToAction("Index");
             }
         }
 
+       
         public class CartApiResponse
         {
             public List<CartItemDto> Items { get; set; }

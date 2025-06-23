@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 
 <ul class="navbar-nav ms-auto">
-    @if (httpContextAccessor.HttpContext.User.Identity?.IsAuthenticated ?? false)
+    @if (httpContextAccessor?.HttpContext?.User.Identity?.IsAuthenticated ?? false)
     {
         <li class="nav-item">
             <span class="nav-link text-dark">Hello, @httpContextAccessor.HttpContext.User.Identity.Name</span>

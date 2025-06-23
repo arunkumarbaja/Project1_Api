@@ -21,19 +21,6 @@ namespace Project1_Api.Controllers.EcomerceApis
             _contextAccessor = contextAccessor;
         }
 
-        //private Guid GetUserId()
-        //{
-        //    return Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? throw new Exception("User not found"));
-        //}
-
-        //// GET /api/cart
-        //[HttpGet]
-        //public async Task<IActionResult> GetCart()
-        //{
-        //    var userId = GetUserId();
-        //    var items = await _shoppingCartService.GetCartItemsAsync(userId);
-        //    return Ok(items);
-        //}
 
         // POST /api/cart
         [HttpPost]
@@ -66,22 +53,41 @@ namespace Project1_Api.Controllers.EcomerceApis
             });
         }
 
+        [HttpPost("increase/{itemId}/{userId}")]
+        public async Task<IActionResult> IncreaseQuantity(Guid itemId, string userId)
+        {
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var success = await _shoppingCartService.IncreaseQuantityAsync(itemId, Guid.Parse(userId));
+            if (!success) return NotFound("Item not found");
+
+            return Ok(new { message = "Quantity increased" });
+        }
+
+        [HttpPost("decrease/{itemId}/{userId}")]
+        public async Task<IActionResult> DecreaseQuantity(Guid itemId, string userId)
+        {
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var success = await _shoppingCartService.DecreaseQuantityAsync(itemId, Guid.Parse(userId));
+            if (!success) return NotFound("Item not found or quantity already 1");
+
+            return Ok(new { message = "Quantity decreased" });
+        }
 
 
         // DELETE /api/cart/{itemId}
-        [HttpDelete("{itemId}")]
-        public async Task<IActionResult> RemoveFromCart(Guid itemId)
+        [HttpDelete("{itemId}/{userId}")]
+        public async Task<IActionResult> RemoveFromCart(Guid itemId, string userId)
         {
-            await _shoppingCartService.RemoveFromCartAsync(itemId);
+            await _shoppingCartService.RemoveFromCartAsync(itemId, Guid.Parse(userId));
             return Ok(new { message = "Item removed from cart" });
         }
 
         // DELETE /api/cart/clear
-        [HttpDelete("clear")]
-        public async Task<IActionResult> ClearCart()
+        [HttpDelete("clear/{userId}")]
+        public async Task<IActionResult> ClearCart(string userId)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             await _shoppingCartService.ClearCartAsync(Guid.Parse(userId));
             return Ok(new { message = "Cart cleared" });
         }

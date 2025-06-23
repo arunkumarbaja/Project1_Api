@@ -1,4 +1,5 @@
-﻿using DTO.ShoppingCart;
+﻿using Domain;
+using DTO.ShoppingCart;
 using Microsoft.EntityFrameworkCore;
 using Project1_Api.Data;
 using System.Collections.Generic;
@@ -62,9 +63,9 @@ namespace BBL.ECommerceServices.ShoppingServices
             }).ToList();
         }
 
-        public async Task RemoveFromCartAsync(Guid cartItemId)
+        public async Task RemoveFromCartAsync(Guid itemId, Guid userId)
         {
-            var item = await _context.ShoppingCartItems.FindAsync(cartItemId);
+            var item = await _context.ShoppingCartItems.FirstOrDefaultAsync(i => i.Id == itemId && i.UserId == userId);
             if (item != null)
             {
                 _context.ShoppingCartItems.Remove(item);
@@ -77,6 +78,31 @@ namespace BBL.ECommerceServices.ShoppingServices
             var items = await _context.ShoppingCartItems.Where(x => x.UserId == userId).ToListAsync();
             _context.ShoppingCartItems.RemoveRange(items);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IncreaseQuantityAsync(Guid itemId, Guid userId)
+        {
+            var item = await _context.ShoppingCartItems.FirstOrDefaultAsync(i => i.Id == itemId && i.UserId == userId);
+
+            if (item == null)
+                return false;
+
+            item.Quantity += 1;
+            await _context.SaveChangesAsync();
+            return true;
+
+        }
+
+        public async Task<bool> DecreaseQuantityAsync(Guid itemId, Guid userId)
+        {
+            var item = await _context.ShoppingCartItems.FirstOrDefaultAsync(i => i.Id == itemId && i.UserId == userId);
+
+            if (item == null)
+                return false;
+
+            item.Quantity -= 1;
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 

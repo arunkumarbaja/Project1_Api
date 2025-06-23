@@ -65,12 +65,24 @@ namespace Web.Controllers
             return View(model);
         }
 
-        [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties
+            {
+                ExpiresUtc = DateTime.UtcNow.AddDays(-1),
+                IsPersistent = false,
+                AllowRefresh = false
+            });
+
+            // Clear user identity manually (defensive, in case layout renders too early)
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+
+            await _signInManager.SignOutAsync();
+
             return RedirectToAction("Login", "Account");
         }
+ 
     }
 
 }

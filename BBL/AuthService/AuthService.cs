@@ -34,13 +34,13 @@ namespace Project1_Api.AuthService
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
-    {
+        {
         new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Subject (User ID)
         new Claim(JwtRegisteredClaimNames.Email, user.Email),
         new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         new Claim(ClaimTypes.Name, user.UserName),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-    };
+        };
 
             // Add each role as a separate claim
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

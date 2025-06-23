@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.Security.Claims;
@@ -8,39 +11,52 @@ namespace Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly HttpClient _httpClient;
-        public AccountController(IHttpClientFactory httpclient  )
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
-            _httpClient = httpclient.CreateClient();
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         [HttpGet]
-        public IActionResult Login()
-        {
-           return   View();
-        }
+        public IActionResult Login() => View();
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string role ="Admin")
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var response = await  _httpClient.PostAsJsonAsync("https://localhost:7079/api/Account/Login", model);
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (response.IsSuccessStatusCode)
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
             {
-                //var token = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                ModelState.AddModelError("", "Invalid login.");
+                return View(model);
+            }
 
-                // Extract claims if you send them from API or use Email
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false,true);
+
+            if (result.Succeeded)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
                 var claims = new List<Claim>
-               {
-                      new Claim(ClaimTypes.Name, model.Email!),
-                      new Claim(ClaimTypes.Role, role)
-               };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName ?? ""),
+                new Claim(ClaimTypes.Email, user.Email ?? "")
+            };
 
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
 
-                var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync("MyCookieAuth", principal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                 return RedirectToAction("Index", "Home");
             }
@@ -48,10 +64,13 @@ namespace Web.Controllers
             ModelState.AddModelError("", "Invalid login.");
             return View(model);
         }
+
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync("MyCookieAuth");
-            return RedirectToAction("Index", "Home");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
         }
     }
+
 }

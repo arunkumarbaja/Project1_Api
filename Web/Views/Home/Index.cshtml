@@ -21,7 +21,11 @@
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-text text-muted">@product.CategoryName</p>
                             <p class="card-text text-primary fw-bold">$@product.Price</p>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Buy Now</a>
+                            <form asp-controller="Cart" asp-action="Add" method="post">
+                                <input type="hidden" name="ProductId" value="@product.Id" />
+                                <input type="hidden" name="Quantity" value="1" />
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Buy Now</button>
+                            </form>
                         </div>
                     </div>
                 </div>

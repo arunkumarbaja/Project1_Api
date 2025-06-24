@@ -1,3 +1,4 @@
+using BBL.ECommerceServices.ShoppingServices;
 using Domain;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
 
 builder.Services.AddHttpContextAccessor();
+
+
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+
 
 
 //---------adding db context service
@@ -68,12 +73,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.Use(async (context, next) =>
-{
-    context.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
-    context.Response.Headers["Pragma"] = "no-cache";
-    await next();
-});
+
 
 app.UseRouting();
 

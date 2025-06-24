@@ -1,5 +1,6 @@
 ﻿using Domain;
 using DTO.ShoppingCart;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -31,6 +32,7 @@ namespace Web.Controllers
                 _httpClient.DefaultRequestHeaders.Add("Cookie", $".AspNetCore.Cookies={cookie}");
                 }
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {

@@ -1,4 +1,5 @@
 ﻿using DTO.OrderDto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Project1_Api.Data;
 using Project1_Api.Models;
@@ -55,11 +56,30 @@ namespace BBL.ECommerceServices.OrderService
                 ShippingAddressState = dto.ShippingAddressState,
                 ShippingAddressPostalCode = dto.ShippingAddressPostalCode,
                 ShippingAddressCountry = dto.ShippingAddressCountry,
-                OrderItems = orderItems
+                OrderItems = orderItems,
+                PaymentTransactionId=Guid.NewGuid().ToString()
             };
 
             await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                int a = await _context.SaveChangesAsync();
+                if (a <= 0)
+                {
+                    Console.WriteLine("⚠ No changes were saved to the database.");
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine($"❌ Database error: {ex.InnerException?.Message ?? ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Unexpected error: {ex.Message}");
+                throw;
+            }
 
             return new OrderResponseDto
             {

@@ -17,7 +17,7 @@ namespace Project1_Api.Controllers.EcomerceControllers
             _orderService = orderService;
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto dto)
         {
             try

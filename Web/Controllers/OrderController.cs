@@ -94,6 +94,18 @@ namespace Web.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
+
+                var user = await _userManager.FindByEmailAsync(userEmail);
+                if(userEmail != null)
+                {
+                    //sending email regrding order placement
+                    await _emailService.SendOrderConfirmationEmailAsync(user!.Email!, user.FirstName, Guid.NewGuid().ToString(), DateTime.UtcNow, user.ShippingAddressStreet, user.ShippingAddressCity, user.ShippingAddressState, user.ShippingAddressPostalCode, user.ShippingAddressCountry);
+
+                }
+
+
+
                 // 4. Clear cart
                 await _shoppingCartService.ClearCartAsync(Guid.Parse(userId));
                 return RedirectToAction("Index","Order");

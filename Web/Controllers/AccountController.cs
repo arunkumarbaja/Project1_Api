@@ -36,14 +36,14 @@ namespace Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email!);
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid login.");
                 return View(model);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user, model.Password, false,true);
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password!, false,true);
 
             if (result.Succeeded)
             {
@@ -95,9 +95,9 @@ namespace Web.Controllers
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = model.Email,
-                NormalizedUserName = model.First_Name.ToUpper() + model.Last_Name.ToUpper(),
+                NormalizedUserName = model.First_Name!.ToUpper() + model.Last_Name!.ToUpper(),
                 Email = model.Email,
-                NormalizedEmail = model.Email.ToUpper(),
+                NormalizedEmail = model.Email!.ToUpper(),
                 EmailConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString("D").ToUpper(),
                 FirstName = model.First_Name,
@@ -152,7 +152,7 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Email);
+                var user = await _userManager.FindByNameAsync(model.Email!);
                 if (user == null)
                 {
                     ModelState.AddModelError("", "User not found. Please check the entered email.");
@@ -162,7 +162,7 @@ namespace Web.Controllers
                 var sub = "this mail is regarding conformation password";
                 var body = "verify email to set new password";
 
-                await _emailService.SendEmailAsync(model.Email, sub, body);
+                await _emailService.SendEmailAsync(model.Email!, sub, body);
 
                 return RedirectToAction("ChangePassword", "Account", new { username = user.UserName });
             }

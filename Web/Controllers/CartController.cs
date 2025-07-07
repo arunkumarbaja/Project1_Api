@@ -73,7 +73,11 @@ namespace Web.Controllers
 
                var userid=  User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-               dto.UserId = Guid.Parse(userid);
+               dto.UserId = Guid.Parse(userid!);
+              if(dto.UserId==null)
+              {
+                return RedirectToAction("Login","Account");
+              }
               // Serialize using Newtonsoft
                var json = JsonConvert.SerializeObject(dto);
                var content = new StringContent(json, Encoding.UTF8, "application/json");

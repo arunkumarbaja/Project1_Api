@@ -34,7 +34,7 @@ namespace Project1_Api.NewFolder
 
 
 
-        public async Task SendOrderConfirmationEmailAsync(string toEmail, string userName, string orderId, DateTime orderDate, decimal totalAmount,string shippingAddressStreet, string shippingAddressCity, string shippingAddressState,string shippingAddressPostalCode, string shippingAddressCountry)
+        public async Task SendOrderConfirmationEmailAsync(string toEmail, string userName, string orderId, DateTime orderDate, string shippingAddressStreet, string shippingAddressCity, string shippingAddressState,string shippingAddressPostalCode, string shippingAddressCountry)
         {
             // Sender email and credentials from configuration or secrets
             var email = configuration.GetValue<string>("Email_Configuration:Email");
@@ -52,7 +52,6 @@ namespace Project1_Api.NewFolder
 
       <h4>Order Summary:</h4>
       <ul>
-        <li><strong>Total Amount:</strong> ₹{totalAmount}</li>
         <li><strong>Shipping Address:</strong><br />
             {shippingAddressStreet},<br />
             {shippingAddressCity}, {shippingAddressState} - {shippingAddressPostalCode}<br />

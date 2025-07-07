@@ -3,7 +3,9 @@ using DTO.OrderDto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Project1_Api.NewFolder;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,16 +18,19 @@ namespace Web.Controllers
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        private readonly  IShoppingCartService _shoppingCartService;
+        private readonly IShoppingCartService _shoppingCartService;
+
+        private readonly IEmailService _emailService;
 
 
-        public OrderController(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager, IShoppingCartService shoppingCartService)
+        public OrderController(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager, IShoppingCartService shoppingCartService, IEmailService emailService)
         {
             _userManager = userManager;
             _httpClient = httpClientFactory.CreateClient();
             _contextAccessor = contextAccessor;
             _httpClient.BaseAddress = new Uri("https://localhost:7079/"); // Update with your actual API base URL
             _shoppingCartService = shoppingCartService;
+            _emailService = emailService;
         }
         private void SetToken()
         {

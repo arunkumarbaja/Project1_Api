@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Project1_Api.NewFolder;
 using System.Data;
 using System.Net.Http;
@@ -64,6 +65,11 @@ namespace Web.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
+                // sending mail that you have logged in
+                var body = $"You have logged in  successfully if not you report changes done";
+                var subject = $"Login Successfull";
+                await _emailService.SendEmailAsync(model.Email!, subject, body);
+
                 return RedirectToAction("Index", "Home");
             }
 
@@ -122,7 +128,7 @@ namespace Web.Controllers
 
                     await _emailService.SendEmailAsync(receptor, subject, body);
 
-                    return Created();
+                    return RedirectToAction("Login","Account");
                 }
                 else
                 {
@@ -135,6 +141,80 @@ namespace Web.Controllers
                 return BadRequest("unable to register");
             }
         }
+
+
+        public IActionResult VerifyEmail()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> VerifyEmail(VerifyEmailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByNameAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "User not found. Please check the entered email.");
+                    return View(model);
+                }
+
+                var sub = "this mail is regarding conformation password";
+                var body = "verify email to set new password";
+
+                await _emailService.SendEmailAsync(model.Email, sub, body);
+
+                return RedirectToAction("ChangePassword", "Account", new { username = user.UserName });
+            }
+
+            return View(model);
+        }
+
+        public IActionResult ChangePassword(string username)
+        {
+
+            return View(new ChangePasswordViewModel { Email = username });
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (model == null)
+                return BadRequest("Password data is missing.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (model.New_Password != model.Confirm_New_Password)
+                return BadRequest("New password and confirmation do not match.");
+
+            var user = await _userManager.FindByEmailAsync(model.Email!);
+            if (user == null)
+                return NotFound("User not found.");
+
+            // Change the password securely
+            var result = await _userManager.ChangePasswordAsync(user, model.Current_Password!, model.New_Password!);
+
+            if (result.Succeeded)
+            {
+                // send email for changing password
+                var body = $"Your password has been changed , report if not you";
+                var subject = $"Password Changed";
+                var receptor = model.Email;
+                await _emailService.SendEmailAsync(receptor!, subject, body);
+
+                //return Ok("Password successfully changed.");
+
+                return RedirectToAction("Account","Login");
+
+            }
+
+            // Return identity errors if it failed
+            return BadRequest(result.Errors);
+        }
+
 
         public async Task<IActionResult> Logout()
         {

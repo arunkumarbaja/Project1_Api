@@ -40,6 +40,8 @@ namespace BBL.ECommerceServices.OrderService
                     UnitPriceAtPurchase = product.Price
                 };
 
+                product.StockQuantity -= 1;
+
                 totalAmount += itemDto.Quantity * product.Price;
                 orderItems.Add(orderItem);
             }

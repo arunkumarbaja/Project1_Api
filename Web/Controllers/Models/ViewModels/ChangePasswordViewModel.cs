@@ -5,8 +5,7 @@ namespace Web.Models.ViewModels
     public class ChangePasswordViewModel
     {
 
-        [Required(ErrorMessage = "error message cannot be empty")]
-        public string? Name { get; set; }
+
 
         [Required(ErrorMessage = "Email message cannot be empty")]
         [EmailAddress]

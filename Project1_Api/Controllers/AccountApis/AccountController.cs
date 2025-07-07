@@ -170,8 +170,8 @@ namespace Project1_Api.Controllers.AccountApis
                 var receptor = model.Email;
                 await _emailService.SendEmailAsync(receptor!, subject, body);
 
-
                 return Ok("Password successfully changed.");
+
             }
 
             // Return identity errors if it failed

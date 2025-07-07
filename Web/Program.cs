@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project1_Api.Data;
+using Project1_Api.NewFolder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 //---------adding db context service

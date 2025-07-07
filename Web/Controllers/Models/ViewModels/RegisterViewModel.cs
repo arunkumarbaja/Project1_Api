@@ -35,7 +35,16 @@ namespace Web.Models.ViewModels
         public string phonenumber { get; set; }
 
 
-
+        [MaxLength(200)]
+        public string ShippingAddressStreet { get; set; }
+        [MaxLength(100)]
+        public string ShippingAddressCity { get; set; }
+        [MaxLength(100)]
+        public string ShippingAddressState { get; set; }
+        [MaxLength(20)]
+        public string ShippingAddressPostalCode { get; set; }
+        [MaxLength(100)]
+        public string ShippingAddressCountry { get; set; }
 
     }
 }

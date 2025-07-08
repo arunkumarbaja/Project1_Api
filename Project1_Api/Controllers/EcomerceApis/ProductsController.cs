@@ -7,7 +7,8 @@ namespace Project1_Api.Controllers.EcomerceControllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+
+      public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
 

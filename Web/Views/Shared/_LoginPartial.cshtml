@@ -5,19 +5,27 @@
 <ul class="navbar-nav ms-auto">
     @if (httpContextAccessor?.HttpContext?.User.Identity?.IsAuthenticated ?? false)
     {
+        <li class="nav-item">
+    <a href="/Cart/Index" class="nav-link position-relative">
+        <i class="bi bi-cart3 fs-4"></i>
+        <span id="cart-count"
+              class="position-absolute badge rounded-pill bg-danger"
+              style="top: -5px; right: -10px; font-size: 0.6rem; padding: 4px 6px; color: white;">
+            3
+        </span>
+    </a>
+</li>
+
          <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index"> 🛒 Cart</a>
-        </li>
-         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Order" asp-action="Index">Orders</a>
+            <a class="nav-link text-white" asp-controller="Order" asp-action="Index">Orders</a>
         </li>
 
 
         <li class="nav-item">
-            <span class="nav-link text-dark">Hello, @httpContextAccessor.HttpContext.User.Identity.Name</span>
+            <span class="nav-link text-white">Hello, @httpContextAccessor.HttpContext.User.Identity.Name</span>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+            <a class="nav-link text-white" asp-controller="Account" asp-action="Logout">Logout</a>
         </li>
  
     }
@@ -26,10 +34,51 @@
         
 
         <li>
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+            <a class="nav-link text-white" asp-controller="Account" asp-action="Login">Login</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+            <a class="nav-link text-white" asp-controller="Account" asp-action="Register">Register</a>
         </li>
     }
 </ul>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        updateCartCount(); // Initial call
+
+        function updateCartCount() {
+            $.ajax({
+                url: "/Cart/GetCartCount",
+                type: "GET",
+                success: function (data) {
+                    $("#cart-count").text(data.count);
+                },
+                error: function () {
+                    console.log("Failed to fetch cart count.");
+                }
+            });
+        }
+
+        // Optional: After add to cart via AJAX, update count again
+        $(".add-to-cart-form").submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.ajax({
+                url: "/Cart/Add",
+                type: "POST",
+                data: form.serialize(),
+                success: function () {
+                    updateCartCount();
+                    // Optional: show toast or success message
+                },
+                error: function () {
+                    alert("Failed to add to cart.");
+                }
+            });
+        });
+
+    });
+</script>

@@ -18,15 +18,15 @@ namespace Project1.SeedServices
             {
                 //ensuring whether database is created or not
 
-                await context.Database.EnsureCreatedAsync();
+                await context!.Database.EnsureCreatedAsync();
 
                 // adding roles
-                await AddRoleAsync(roleManager, "Admin");
-                await AddRoleAsync(roleManager, "User");
+                await AddRoleAsync(roleManager!, "Admin");
+                await AddRoleAsync(roleManager!, "User");
 
                 // 
                 var AdminEmail = "admin@gmail.com";
-                if (await userManager.FindByEmailAsync(AdminEmail) == null)
+                if (await userManager!.FindByEmailAsync(AdminEmail) == null)
                 {
                     var user = new ApplicationUser()
                     {
@@ -47,7 +47,7 @@ namespace Project1.SeedServices
             }
             catch (Exception ex)
             {
-                
+                Console.Write(ex.Message);
             }
         }
 

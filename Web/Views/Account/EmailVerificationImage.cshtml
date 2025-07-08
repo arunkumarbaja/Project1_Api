@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Email Verification Sent";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card shadow p-4">
+        <h2 class="text-success">Verification Email Sent</h2>
+        <p class="mt-3">We've sent a verification link to your email address.</p>
+        <p>Please check your inbox (and spam folder) and click the confirmation link to verify your email.</p>
+        <a href="@Url.Action("Login", "Account")" class="btn btn-primary mt-3">Back to Login</a>
+    </div>
+</div>

@@ -3,11 +3,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Project1_Api.NewFolder;
 using System.Data;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
+using Web.Models;
 using Web.Models.ViewModels;
 
 namespace Web.Controllers
@@ -26,7 +30,7 @@ namespace Web.Controllers
             _roleManager = roleManager;
             _emailService = emailService;
         }
-
+        
         [HttpGet]
         public IActionResult Login() => View();
 
@@ -121,19 +125,19 @@ namespace Web.Controllers
                 var roleresult = await _userManager.AddToRoleAsync(user, role);
                 if (roleresult.Succeeded)
                 {
-                    // send registration successfull email
-                    var body = $" Dear {model.First_Name} you have successfully registred";
-                    var subject = $"Registration Successfull";
-                    var receptor = model.Email;
+                    // Send registration successful email
+                    var welcomeBody = $"Dear {model.First_Name}, you have successfully registered.";
+                    var welcomeSubject = "Registration Successful";
+                    await _emailService.SendEmailAsync(model.Email, welcomeSubject, welcomeBody);
 
-                    await _emailService.SendEmailAsync(receptor, subject, body);
-
-                    return RedirectToAction("Login","Account");
+                
+                    return RedirectToAction("Login", "Account");
                 }
                 else
                 {
-                    return BadRequest("error occurred while adding to role");
+                    return BadRequest("Error occurred while adding to role");
                 }
+
 
             }
             else
@@ -159,16 +163,59 @@ namespace Web.Controllers
                     return View(model);
                 }
 
-                var sub = "this mail is regarding conformation password";
-                var body = "verify email to set new password";
+                // Generate token for email verification
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
-                await _emailService.SendEmailAsync(model.Email!, sub, body);
+                var confirmationLink = Url.Action(nameof(ConfirmEmail), "Account", new { token = encodedToken, email = user.Email }, protocol: HttpContext.Request.Scheme);
 
-                return RedirectToAction("ChangePassword", "Account", new { username = user.UserName });
+                // Compose HTML body with confirmation link
+                var confirmBody = $@"
+                Hi {user.FirstName}
+                Thank you for registering. Please confirm your email by clicking the link below:
+                <a href='{confirmationLink}'>Confirm Email</a>
+                If you did not request this, you can ignore this email ";
+
+                var confirmSubject = "Email Confirmation Link";
+                await _emailService.SendEmailAsync(user.Email!, confirmSubject, confirmBody);
+
+
+                return RedirectToAction("EmailVerificationImage", "Account");
             }
 
             return View(model);
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            if (token == null || email == null)
+                return View("Error", new ErrorViewModel { Message = "Token or email is missing." });
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return View("Error", new ErrorViewModel { Message = "User not found." });
+
+            string decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ChangePassword", "Account", new { username = user.UserName });
+            }
+
+            return View("Error", new ErrorViewModel { Message = "Email confirmation failed." });
+        }
+
+        [HttpGet]
+        public IActionResult EmailVerificationImage()
+        {
+            return View();
+        }
+
 
         public IActionResult ChangePassword(string username)
         {

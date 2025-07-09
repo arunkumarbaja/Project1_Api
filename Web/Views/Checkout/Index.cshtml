@@ -1,0 +1,59 @@
+﻿<!-- PayPal SDK Script -->
+<script src="https://www.paypal.com/sdk/js?client-id=@(ViewBag.PayPalClientId)&currency=USD"></script>
+
+<!-- Centered Container -->
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="mx-auto p-4 rounded border shadow" style="width: 420px; background-color: #fff;">
+
+        <h2 class="text-center mb-4">Complete your order</h2>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Total Amount ($)</label>
+            <input class="form-control" type="number" id="totalAmount" step="0.01" placeholder="Enter amount" />
+        </div>
+
+        <div id="notification-container" class="mb-3"></div>
+
+        <div id="paypal-button-container"></div>
+
+    </div>
+</div>
+
+<!-- PayPal Button Script -->
+<script>
+    paypal.Buttons({
+        async createOrder() {
+            const amount = document.getElementById("totalAmount").value;
+            console.log("Sending payment for: ", amount);
+
+            const response = await fetch('@Url.Action("CreatePaymentOrder", "Checkout")', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ amount: amount })
+            });
+
+            const order = await response.json();
+            console.log("Received order ID: ", order.id);
+            return order.id;
+        },
+
+        onCancel(data) {
+            document.getElementById("notification-container").innerHTML = `
+                <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                    <strong>Payment Canceled!</strong>
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>`;
+        },
+
+        onError(err) {
+            console.error("PayPal Error:", err);
+            document.getElementById("notification-container").innerHTML = `
+                <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                    <strong>An error occurred! Please try again later.</strong>
+                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                </div>`;
+        }
+    }).render('#paypal-button-container');
+</script>

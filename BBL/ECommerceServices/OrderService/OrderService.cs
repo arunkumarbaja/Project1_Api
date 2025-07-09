@@ -1,4 +1,5 @@
-﻿using DTO.OrderDto;
+﻿using Domain.Models;
+using DTO.OrderDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Project1_Api.Data;
@@ -51,7 +52,7 @@ namespace BBL.ECommerceServices.OrderService
                 Id = Guid.NewGuid(),
                 UserId = dto.UserId,
                 OrderDate = DateTime.UtcNow,
-                Status = OrderStatus.Pending,
+                Status = Domain.Models.OrderStatus.Pending,
                 TotalAmount = totalAmount,
                 ShippingAddressStreet = dto.ShippingAddressStreet,
                 ShippingAddressCity = dto.ShippingAddressCity,
@@ -92,18 +93,14 @@ namespace BBL.ECommerceServices.OrderService
             };
         }
 
-        public async Task<OrderResponseDto> GetOrderByIdAsync(Guid orderId)
+        public async Task<Order> GetOrderByIdAsync(Guid orderId)
         {
             var order = await _context.Orders.FindAsync(orderId);
-            if (order == null) return null;
+            if (order == null)
+                return null!;
 
-            return new OrderResponseDto
-            {
-                OrderId = order.Id,
-                OrderDate = order.OrderDate,
-                TotalAmount = order.TotalAmount,
-                Status = order.Status
-            };
+            return  order;
+            
         }
 
         public async Task<List<OrderResponseDto>> GetOrdersByUserIdAsync(Guid userId)

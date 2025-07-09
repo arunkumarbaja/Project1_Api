@@ -18,7 +18,6 @@ else
                 <th>Order ID</th>
                 <th>Date</th>
                 <th>Total</th>
-                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +27,17 @@ else
                     <td>@order.OrderId</td>
                     <td>@order.OrderDate.ToLocalTime().ToString("g")</td>
                     <td>@order.TotalAmount.ToString("C")</td>
-                    <td>@order.Status</td>
+                    <td>
+
+                        <a class="btn btn-sm btn-primary"
+                           asp-controller="Order"
+                           asp-action="DownloadInvoice"
+                           asp-route-orderId="@order.OrderId">
+                            Download Invoice
+                        </a>
+
+                        
+                    </td>
                 </tr>
             }
         </tbody>

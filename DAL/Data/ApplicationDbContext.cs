@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project1_Api.Models;
+using OrderStatus = Domain.Models.OrderStatus;
 
 namespace Project1_Api.Data
 {
@@ -253,7 +255,7 @@ namespace Project1_Api.Data
                     Id = orderAliceId,
                     UserId = aliceUserId,
                     OrderDate = DateTime.UtcNow.AddDays(-7),
-                    Status = OrderStatus.Delivered,
+                    Status = Domain.Models.OrderStatus.Delivered,
                     TotalAmount = aliceOrderTotal,
                     ShippingAddressStreet = "123 Main St", // Copied from Alice's profile at time of order
                     ShippingAddressCity = "Anytown",

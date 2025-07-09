@@ -1,0 +1,125 @@
+﻿@model Domain.Models.Order
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Invoice - @Model.Id</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            font-size: 14px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header, .footer {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .summary-table td {
+            border: none;
+            padding: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🧾 Invoice</h1>
+        <p>ShopEase - Your Order Summary</p>
+    </div>
+
+    <div class="section">
+        <table class="summary-table">
+            <tr>
+                <td><strong>Order ID:</strong></td>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <td><strong>Order Date:</strong></td>
+                <td>@Model.OrderDate.ToString("dd MMM yyyy")</td>
+            </tr>
+            <tr>
+                <td><strong>Status:</strong></td>
+                <td>@Model.Status</td>
+            </tr>
+            <tr>
+                <td><strong>Transaction ID:</strong></td>
+                <td>@Model.PaymentTransactionId</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h3>Shipping Address</h3>
+        <p>
+            @Model.ShippingAddressStreet<br />
+            @Model.ShippingAddressCity, @Model.ShippingAddressState - @Model.ShippingAddressPostalCode<br />
+            @Model.ShippingAddressCountry
+        </p>
+    </div>
+
+    <div class="section">
+        <h3>Order Items</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>$@item.Product.Price</td>
+                        <td>@item.Quantity</td>
+                        <td>$@(item.Product.Price* item.Quantity)</td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="3" class="total">Total Amount:</td>
+                    <td class="total">$@Model.TotalAmount</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for shopping with ShopEase! 🛒</p>
+    </div>
+
+</body>
+</html>

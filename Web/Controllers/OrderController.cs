@@ -1,14 +1,21 @@
 ﻿using BBL.ECommerceServices.ShoppingServices;
+using Domain.Models;
 using DTO.OrderDto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using Project1_Api.NewFolder;
+using SelectPdf;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using static Web.Controllers.CartController;
 
 namespace Web.Controllers
 {
@@ -114,6 +121,76 @@ namespace Web.Controllers
             TempData["Error"] = "Failed to place order.";
             return RedirectToAction("Index", "Home");
         }
-       
+        [HttpGet]
+        public async Task<IActionResult> DownloadInvoice(Guid orderId)
+        {
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return RedirectToAction("Login", "Account");
+
+
+            // Fetch order details from DB
+
+            var response = await _httpClient.GetAsync($"api/order/{orderId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Unable to fetch orders.";
+                return View(new Order());
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var order = System.Text.Json.JsonSerializer.Deserialize<Order>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+
+            if (order == null)
+                return NotFound();
+
+            // Render Razor view to HTML
+            string htmlContent = await this.RenderViewAsync("DownloadInvoice", order, true);
+
+            // Convert HTML to PDF
+            HtmlToPdf converter = new HtmlToPdf();
+            PdfDocument doc = converter.ConvertHtmlString(htmlContent);
+
+            byte[] pdf = doc.Save();
+            doc.Close();
+
+            return File(pdf, "application/pdf", $"DownloadInvoice_{orderId}.pdf");
+        }
     }
+
+    public static class ControllerExtensions
+    {
+        public static async Task<string> RenderViewAsync<TModel>(this Controller controller, string viewName, TModel model, bool partial = false)
+        {
+            controller.ViewData.Model = model;
+
+            using var sw = new StringWriter();
+            var viewEngine = controller.HttpContext.RequestServices.GetService(typeof(IRazorViewEngine)) as IRazorViewEngine;
+            var tempDataProvider = controller.HttpContext.RequestServices.GetService(typeof(ITempDataProvider)) as ITempDataProvider;
+            var actionContext = new ActionContext(controller.HttpContext, controller.RouteData, controller.ControllerContext.ActionDescriptor);
+
+            var viewResult = viewEngine!.FindView(actionContext, viewName, !partial);
+
+            if (!viewResult.Success)
+                throw new InvalidOperationException($"View {viewName} not found.");
+
+            var viewContext = new ViewContext(
+                actionContext,
+                viewResult.View,
+                controller.ViewData,
+                controller.TempData,
+                sw,
+                new HtmlHelperOptions()
+            );
+
+            await viewResult.View.RenderAsync(viewContext);
+            return sw.ToString();
+        }
+    }
+
 }

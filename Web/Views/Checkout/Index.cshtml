@@ -38,6 +38,40 @@
             console.log("Received order ID: ", order.id);
             return order.id;
         },
+         async onApprove(data) {
+        // Capture the funds from the transaction.
+        const response = await fetch("@Url.ActionLink("CompleteOrder","Checkout")", {
+          method: "POST",
+          headers: {
+                    "Content-Type": "application/json"
+                },
+          body: JSON.stringify({
+            orderID: data.orderID
+          })
+        })
+
+           const details = await response.json();
+
+    // Show success message to buyer
+    if (details === "success") {
+        document.getElementById("notification-container").innerHTML = `
+        <div class='alert alert-success alert-dismissible fade show' role='alert'>
+            <strong>The order is created successfully!</strong>
+            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+        </div>
+        `;
+    }
+    else {
+        document.getElementById("notification-container").innerHTML = `
+        <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+            <strong>Failed to create the order!</strong>
+            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+        </div>
+        `;
+    }
+
+         
+        },
 
         onCancel(data) {
             document.getElementById("notification-container").innerHTML = `

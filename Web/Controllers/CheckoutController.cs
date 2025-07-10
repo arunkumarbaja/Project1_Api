@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Web.Controllers
 {
-    public class Checkout : Controller
+    public class CheckoutController : Controller
     {
         private string PayPalClientId { get; set; } = "";
 
@@ -16,7 +16,7 @@ namespace Web.Controllers
 
         private string PaypalUrl { get; set; } = "";
 
-        public Checkout(IConfiguration configuration) 
+        public CheckoutController(IConfiguration configuration) 
         {
             PayPalClientId = configuration["PayPalSettings:ClientId"]!;
             PayPalSecret = configuration["PayPalSettings:Secret"]!;
@@ -26,10 +26,10 @@ namespace Web.Controllers
 
         public async Task<string> Token()
         {
-            return await GetPaypalToken();
+            return await GetPaypalTokenAsync();
         }
 
-        private async Task<string> GetPaypalToken()
+        private async Task<string> GetPaypalTokenAsync()
         {
             string accessToken = string.Empty;
 
@@ -100,7 +100,7 @@ namespace Web.Controllers
 
             // get access toekn 
 
-            string accessToken = await GetPaypalToken();
+            string accessToken = await GetPaypalTokenAsync();
 
             string url = PaypalUrl.TrimEnd('/') + "/v2/checkout/orders";
 
@@ -131,6 +131,49 @@ namespace Web.Controllers
             return new JsonResult(new { id = "" });
 
         }
+
+
+        [HttpPost]
+        public async Task<JsonResult> CompleteOrder([FromBody] JsonObject data)
+        {
+            var orderId = data["orderID"]?.ToString();
+            if (orderId == null)
+            {
+                return new JsonResult("error");
+            }
+
+            string accessToken = await GetPaypalTokenAsync();
+
+            string url = $"{PaypalUrl}/v2/checkout/orders/{orderId}/capture";
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+                var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+                requestMessage.Content = new StringContent("", Encoding.UTF8, "application/json");
+
+                var httpResponse = await client.SendAsync(requestMessage);
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var strResponse = await httpResponse.Content.ReadAsStringAsync();
+                    var jsonResponse = JsonNode.Parse(strResponse);
+
+                    if (jsonResponse != null)
+                    {
+                        string paypalOrderStatus = jsonResponse["status"]?.ToString() ?? "";
+                        if (paypalOrderStatus == "COMPLETED")
+                        {
+                            return new JsonResult("success");
+                        }
+                    }
+                }
+            }
+
+            return new JsonResult("error");
+        }
+
 
     }
 }

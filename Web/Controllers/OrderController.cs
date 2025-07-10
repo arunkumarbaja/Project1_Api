@@ -94,6 +94,9 @@ namespace Web.Controllers
                     Quantity = ci.Quantity
                 }).ToList()
             };
+            //make payment...........
+
+
 
             // 3. Send request to API
             var request = new StringContent(JsonConvert.SerializeObject(orderDto), Encoding.UTF8, "application/json");

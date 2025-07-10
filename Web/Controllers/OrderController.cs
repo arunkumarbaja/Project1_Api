@@ -68,7 +68,7 @@ namespace Web.Controllers
             return View(orders);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> PlaceOrder()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -94,10 +94,7 @@ namespace Web.Controllers
                     Quantity = ci.Quantity
                 }).ToList()
             };
-            //make payment...........
-
-
-
+          
             // 3. Send request to API
             var request = new StringContent(JsonConvert.SerializeObject(orderDto), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("api/order/create", request);

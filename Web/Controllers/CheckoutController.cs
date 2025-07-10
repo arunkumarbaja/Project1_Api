@@ -64,11 +64,14 @@ namespace Web.Controllers
         }
 
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index([FromQuery] decimal totalAmount)
         {
             ViewBag.PayPalClientId = PayPalClientId;
+            ViewBag.totalAmount = totalAmount;
             return View();
         }
+
 
 
         [HttpPost]

@@ -9,7 +9,7 @@
 
         <div class="form-group mb-3">
             <label class="form-label">Total Amount ($)</label>
-            <input class="form-control" type="number" id="totalAmount" step="0.01" placeholder="Enter amount" />
+            <input class="form-control" type="number" id="totalAmount" step="0.01" value="@ViewBag.totalAmount"  readonly/>
         </div>
 
         <div id="notification-container" class="mb-3"></div>
@@ -53,14 +53,21 @@
            const details = await response.json();
 
     // Show success message to buyer
-    if (details === "success") {
+        if (details === "success") {
+        // Show success alert
         document.getElementById("notification-container").innerHTML = `
         <div class='alert alert-success alert-dismissible fade show' role='alert'>
             <strong>The order is created successfully!</strong>
             <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
         </div>
         `;
+
+        // Redirect after short delay
+        setTimeout(function () {
+            window.location.href = "/Order/PlaceOrder";
+        }, 2000); // waits 2 seconds before redirecting (optional)
     }
+
     else {
         document.getElementById("notification-container").innerHTML = `
         <div class='alert alert-danger alert-dismissible fade show' role='alert'>

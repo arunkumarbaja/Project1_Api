@@ -1,4 +1,4 @@
-﻿namespace Project1_Api.Models
+﻿namespace Domain.Models
 {
     public enum OrderStatus
     {

@@ -1,5 +1,4 @@
-﻿using Project1_Api.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -8,10 +7,6 @@ namespace Domain.Models
 {
 
 
-    public enum OrderStatus // Make sure this enum is defined or accessible
-    {
-        Pending, Paid, Shipped, Delivered, Cancelled
-    }
 
     public class Order
     {

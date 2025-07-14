@@ -3,7 +3,7 @@ using Domain.Models;
 using Microsoft.AspNetCore.Identity;
 
 
-namespace Domain
+namespace Domain.Models
 {
     public class User : IdentityUser
     {

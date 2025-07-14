@@ -1,9 +1,9 @@
-﻿using Domain.Models;
+﻿using DAL.Data;
+using Domain.Models;
 using DTO.OrderDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Project1_Api.Data;
-using Project1_Api.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

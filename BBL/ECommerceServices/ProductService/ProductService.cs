@@ -1,8 +1,9 @@
-﻿using DTO.ProductDTO;
+﻿using DAL.Data;
+using Domain.Models;
+using DTO.ProductDTO;
 using Microsoft.EntityFrameworkCore;
 using Project1.Models;
-using Project1_Api.Data;
-using Project1_Api.Models;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;

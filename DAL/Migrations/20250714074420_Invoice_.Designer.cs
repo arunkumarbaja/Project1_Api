@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Project1_Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250605103234_Changed_3")]
-    partial class Changed_3
+    [Migration("20250714074420_Invoice_")]
+    partial class Invoice_
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,13 +55,13 @@ namespace Project1_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4d4d65a3-68ea-4959-9f71-5ee64baccbfe"),
+                            Id = new Guid("b35a0423-d0be-49f4-a9ed-3b5a9a1d2a54"),
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("f8334bf9-f3bf-4162-b765-b11bca6a6c84"),
+                            Id = new Guid("2d40c3a2-5dfb-422d-9f8e-bfbd5d5a9d1f"),
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -173,10 +173,10 @@ namespace Project1_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("43f8af90-4d78-4c12-8365-ba159decfbad"),
+                            Id = new Guid("0d4e4678-29d4-4aab-8f56-4725162eb42b"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a955b777-741e-48c4-a4e7-0ea5068abc73",
-                            DateRegistered = new DateTime(2025, 2, 25, 10, 32, 32, 791, DateTimeKind.Utc).AddTicks(4701),
+                            ConcurrencyStamp = "22bb12c5-27ce-4e29-bfd2-b865fb6b427c",
+                            DateRegistered = new DateTime(2025, 4, 5, 7, 44, 19, 724, DateTimeKind.Utc).AddTicks(787),
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Site",
@@ -184,9 +184,9 @@ namespace Project1_Api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDmBtkUjUCL3pFtGpmPtTbw1t1RXglR3tkEz/ktyk721efAPHD4F2XXnX5DKMwVkmg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEB2qncL7+eEntSsQVH5qTpbCEH7HX7kmaBxDPws9RGRLzzz4VtysShkOfVfmwmPl+w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "13F0391D-5A4A-4903-A1A0-E0CE1E9EF00A",
+                            SecurityStamp = "5FE67096-E2C5-4114-BE60-AEF8C61098FA",
                             ShippingAddressCity = "Control Panel",
                             ShippingAddressCountry = "SERVERLAND",
                             ShippingAddressPostalCode = "00001",
@@ -197,10 +197,10 @@ namespace Project1_Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("23476a76-c69a-4bef-8c68-467832b72c4f"),
+                            Id = new Guid("6449ba12-6618-4ddc-a297-02b02461b592"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "93b591d2-b268-4f84-ae0f-f5254f56ac09",
-                            DateRegistered = new DateTime(2025, 4, 6, 10, 32, 32, 937, DateTimeKind.Utc).AddTicks(8701),
+                            ConcurrencyStamp = "c8d0aa3b-4796-414a-aef7-a28d1ed00a14",
+                            DateRegistered = new DateTime(2025, 5, 15, 7, 44, 19, 812, DateTimeKind.Utc).AddTicks(2159),
                             Email = "alice.w@example.com",
                             EmailConfirmed = true,
                             FirstName = "Alice",
@@ -208,9 +208,9 @@ namespace Project1_Api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ALICE.W@EXAMPLE.COM",
                             NormalizedUserName = "ALICE.W@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFDf4v6M56fnS/7MFTzWNRC9n+lUrbMDA6WGqYaFBoIL9QX4/fkM/kPwKSfalzD80w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDmf2biRN8jnVLbONKQ4fewPdg+cIE6WgkFT7T/JS2fhRz5DSSyEC2fASZI4zl05Bw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "56C8CAF4-BD83-4742-8D2E-1B64D704C9C9",
+                            SecurityStamp = "8B2D079F-DB76-4539-9B0B-0C404C3ABCBC",
                             ShippingAddressCity = "Anytown",
                             ShippingAddressCountry = "USA",
                             ShippingAddressPostalCode = "90210",
@@ -221,10 +221,10 @@ namespace Project1_Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("64d8122e-5e3c-4ba8-ad31-0709286d9783"),
+                            Id = new Guid("445a39a0-beda-40fb-a1e7-81c7c503ea9f"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "57338123-d32e-4143-8b84-bd00e1f87870",
-                            DateRegistered = new DateTime(2025, 4, 16, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(415),
+                            ConcurrencyStamp = "7562c3fc-c40f-440e-839f-361e1143c593",
+                            DateRegistered = new DateTime(2025, 5, 25, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(3023),
                             Email = "bob.builder@example.com",
                             EmailConfirmed = true,
                             FirstName = "Bob",
@@ -232,9 +232,9 @@ namespace Project1_Api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BOB.BUILDER@EXAMPLE.COM",
                             NormalizedUserName = "BOB.BUILDER@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJXXOuHaBcx/iKKKct4H1IP7tBv4vfA1YHxrwEonqz/KoMe9eNsNLSi8j2XmYWzAcg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDpdDy06H93l5lmNtY4xAPp3SwWOBE/pJQ1eooKTuejEPfAsfHKt1ABfR7rxw1BpCA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "157546A4-0F03-4366-974A-10DCB2315F45",
+                            SecurityStamp = "DB0C94FB-CDA2-4683-AFCF-E61595F33706",
                             ShippingAddressCity = "Otherville",
                             ShippingAddressCountry = "USA",
                             ShippingAddressPostalCode = "10001",
@@ -242,6 +242,136 @@ namespace Project1_Api.Migrations
                             ShippingAddressStreet = "456 Oak Ave",
                             TwoFactorEnabled = false,
                             UserName = "bob.builder@example.com"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Models.Invoice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShippingAddressCity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddressCountry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddressPostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddressState")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShippingAddressStreet")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPriceAtPurchase")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("Domain.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentTransactionId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ShippingAddressCity")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ShippingAddressCountry")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ShippingAddressPostalCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ShippingAddressState")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ShippingAddressStreet")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("182648fc-37ce-4764-b560-cc145be26675"),
+                            OrderDate = new DateTime(2025, 7, 7, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(4259),
+                            PaymentTransactionId = "txn_alice_123seed",
+                            ShippingAddressCity = "Anytown",
+                            ShippingAddressCountry = "USA",
+                            ShippingAddressPostalCode = "90210",
+                            ShippingAddressState = "CA",
+                            ShippingAddressStreet = "123 Main St",
+                            Status = 3,
+                            TotalAmount = 199.99m,
+                            UserId = new Guid("6449ba12-6618-4ddc-a297-02b02461b592")
+                        },
+                        new
+                        {
+                            Id = new Guid("9b54f026-e3c6-4c9b-bf49-e91bcde8a37f"),
+                            OrderDate = new DateTime(2025, 7, 11, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(7704),
+                            PaymentTransactionId = "txn_bob_456seed",
+                            ShippingAddressCity = "Otherville",
+                            ShippingAddressCountry = "USA",
+                            ShippingAddressPostalCode = "10001",
+                            ShippingAddressState = "NY",
+                            ShippingAddressStreet = "456 Oak Ave",
+                            Status = 2,
+                            TotalAmount = 539.40m,
+                            UserId = new Guid("445a39a0-beda-40fb-a1e7-81c7c503ea9f")
                         });
                 });
 
@@ -331,18 +461,18 @@ namespace Project1_Api.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("43f8af90-4d78-4c12-8365-ba159decfbad"),
-                            RoleId = new Guid("4d4d65a3-68ea-4959-9f71-5ee64baccbfe")
+                            UserId = new Guid("0d4e4678-29d4-4aab-8f56-4725162eb42b"),
+                            RoleId = new Guid("b35a0423-d0be-49f4-a9ed-3b5a9a1d2a54")
                         },
                         new
                         {
-                            UserId = new Guid("23476a76-c69a-4bef-8c68-467832b72c4f"),
-                            RoleId = new Guid("f8334bf9-f3bf-4162-b765-b11bca6a6c84")
+                            UserId = new Guid("6449ba12-6618-4ddc-a297-02b02461b592"),
+                            RoleId = new Guid("2d40c3a2-5dfb-422d-9f8e-bfbd5d5a9d1f")
                         },
                         new
                         {
-                            UserId = new Guid("64d8122e-5e3c-4ba8-ad31-0709286d9783"),
-                            RoleId = new Guid("f8334bf9-f3bf-4162-b765-b11bca6a6c84")
+                            UserId = new Guid("445a39a0-beda-40fb-a1e7-81c7c503ea9f"),
+                            RoleId = new Guid("2d40c3a2-5dfb-422d-9f8e-bfbd5d5a9d1f")
                         });
                 });
 
@@ -365,92 +495,7 @@ namespace Project1_Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentTransactionId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ShippingAddressCity")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("ShippingAddressCountry")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("ShippingAddressPostalCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("ShippingAddressState")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("ShippingAddressStreet")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("20fe6292-620d-4aaf-9db5-6db7d805f626"),
-                            OrderDate = new DateTime(2025, 5, 29, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(2113),
-                            PaymentTransactionId = "txn_alice_123seed",
-                            ShippingAddressCity = "Anytown",
-                            ShippingAddressCountry = "USA",
-                            ShippingAddressPostalCode = "90210",
-                            ShippingAddressState = "CA",
-                            ShippingAddressStreet = "123 Main St",
-                            Status = 3,
-                            TotalAmount = 199.99m,
-                            UserId = new Guid("23476a76-c69a-4bef-8c68-467832b72c4f")
-                        },
-                        new
-                        {
-                            Id = new Guid("cd34ec29-d0d6-4ddd-981d-f43a609a2374"),
-                            OrderDate = new DateTime(2025, 6, 2, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(2302),
-                            PaymentTransactionId = "txn_bob_456seed",
-                            ShippingAddressCity = "Otherville",
-                            ShippingAddressCountry = "USA",
-                            ShippingAddressPostalCode = "10001",
-                            ShippingAddressState = "NY",
-                            ShippingAddressStreet = "456 Oak Ave",
-                            Status = 2,
-                            TotalAmount = 539.40m,
-                            UserId = new Guid("64d8122e-5e3c-4ba8-ad31-0709286d9783")
-                        });
-                });
-
-            modelBuilder.Entity("Project1.Models.Category", b =>
+            modelBuilder.Entity("Project1_Api.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -473,25 +518,25 @@ namespace Project1_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("218545d9-b2f5-4766-8e0e-8a3385c0fc6d"),
+                            Id = new Guid("bed1ed01-5445-4f14-b9f4-5c72c49cd4c7"),
                             Description = "Gadgets, devices, and more.",
                             Name = "Electronics"
                         },
                         new
                         {
-                            Id = new Guid("c3ff0dbd-0579-40c9-b545-080ddf0592c3"),
+                            Id = new Guid("76960d7a-7323-4bb9-9451-caf91de6d087"),
                             Description = "Fiction, non-fiction, and educational.",
                             Name = "Books"
                         },
                         new
                         {
-                            Id = new Guid("e83019c1-0ac6-46da-bca9-6e8962247266"),
+                            Id = new Guid("781c50cb-955c-40de-b0ec-1f542e0090c4"),
                             Description = "Clothing for all occasions.",
                             Name = "Apparel"
                         });
                 });
 
-            modelBuilder.Entity("Project1.Models.OrderItem", b =>
+            modelBuilder.Entity("Project1_Api.Models.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -520,31 +565,31 @@ namespace Project1_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("514856ea-0c52-43ba-964c-85881381dd44"),
-                            OrderId = new Guid("20fe6292-620d-4aaf-9db5-6db7d805f626"),
-                            ProductId = new Guid("a3f1d105-f357-4173-9a62-be533aa7dd99"),
+                            Id = new Guid("d6ac276c-32bb-45b9-91fa-27f33d57e6fc"),
+                            OrderId = new Guid("182648fc-37ce-4764-b560-cc145be26675"),
+                            ProductId = new Guid("859dd085-223b-4f0e-a8b5-ddc4912aceef"),
                             Quantity = 1,
                             UnitPriceAtPurchase = 199.99m
                         },
                         new
                         {
-                            Id = new Guid("4d8a5e29-a365-4f1d-81c3-f76122dbd52f"),
-                            OrderId = new Guid("cd34ec29-d0d6-4ddd-981d-f43a609a2374"),
-                            ProductId = new Guid("c751e199-9a58-4619-a331-24390f30a311"),
+                            Id = new Guid("e65730f9-8123-46b5-8c40-2aa29b80f9df"),
+                            OrderId = new Guid("9b54f026-e3c6-4c9b-bf49-e91bcde8a37f"),
+                            ProductId = new Guid("163054c6-eaf3-46e0-bbdd-ba10bb80829a"),
                             Quantity = 1,
                             UnitPriceAtPurchase = 499.50m
                         },
                         new
                         {
-                            Id = new Guid("f8f30353-10a8-46e9-81c8-f71ad6d6e82a"),
-                            OrderId = new Guid("cd34ec29-d0d6-4ddd-981d-f43a609a2374"),
-                            ProductId = new Guid("e6097226-3a38-4a82-ac10-8ddb5a8819ce"),
+                            Id = new Guid("899b3591-d522-430d-a65d-1ff4c8954f85"),
+                            OrderId = new Guid("9b54f026-e3c6-4c9b-bf49-e91bcde8a37f"),
+                            ProductId = new Guid("e494daf4-f457-4e63-a1c1-d7b1b41aabb4"),
                             Quantity = 2,
                             UnitPriceAtPurchase = 19.95m
                         });
                 });
 
-            modelBuilder.Entity("Project1.Models.Product", b =>
+            modelBuilder.Entity("Project1_Api.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -593,9 +638,9 @@ namespace Project1_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a3f1d105-f357-4173-9a62-be533aa7dd99"),
-                            CategoryId = new Guid("218545d9-b2f5-4766-8e0e-8a3385c0fc6d"),
-                            DateCreated = new DateTime(2025, 5, 6, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(1762),
+                            Id = new Guid("859dd085-223b-4f0e-a8b5-ddc4912aceef"),
+                            CategoryId = new Guid("bed1ed01-5445-4f14-b9f4-5c72c49cd4c7"),
+                            DateCreated = new DateTime(2025, 6, 14, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(3927),
                             Description = "Immerse yourself in sound.",
                             ImageUrl = "/images/products/headphones.jpg",
                             IsAvailable = true,
@@ -606,9 +651,9 @@ namespace Project1_Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c751e199-9a58-4619-a331-24390f30a311"),
-                            CategoryId = new Guid("218545d9-b2f5-4766-8e0e-8a3385c0fc6d"),
-                            DateCreated = new DateTime(2025, 5, 11, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(1770),
+                            Id = new Guid("163054c6-eaf3-46e0-bbdd-ba10bb80829a"),
+                            CategoryId = new Guid("bed1ed01-5445-4f14-b9f4-5c72c49cd4c7"),
+                            DateCreated = new DateTime(2025, 6, 19, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(3931),
                             Description = "Vibrant colors, smart features.",
                             ImageUrl = "/images/products/smart-tv.jpg",
                             IsAvailable = true,
@@ -619,9 +664,9 @@ namespace Project1_Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fe95b471-f8eb-40ad-9400-9b1a9e01f890"),
-                            CategoryId = new Guid("c3ff0dbd-0579-40c9-b545-080ddf0592c3"),
-                            DateCreated = new DateTime(2025, 5, 16, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(1775),
+                            Id = new Guid("e73cdf56-7c04-4fa8-a8ed-8992eae0a562"),
+                            CategoryId = new Guid("76960d7a-7323-4bb9-9451-caf91de6d087"),
+                            DateCreated = new DateTime(2025, 6, 24, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(3937),
                             Description = "Three bestselling sci-fi novels.",
                             ImageUrl = "/images/products/scifi-books.jpg",
                             IsAvailable = true,
@@ -632,9 +677,9 @@ namespace Project1_Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e6097226-3a38-4a82-ac10-8ddb5a8819ce"),
-                            CategoryId = new Guid("e83019c1-0ac6-46da-bca9-6e8962247266"),
-                            DateCreated = new DateTime(2025, 5, 21, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(1792),
+                            Id = new Guid("e494daf4-f457-4e63-a1c1-d7b1b41aabb4"),
+                            CategoryId = new Guid("781c50cb-955c-40de-b0ec-1f542e0090c4"),
+                            DateCreated = new DateTime(2025, 6, 29, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(3944),
                             Description = "Comfortable and stylish.",
                             ImageUrl = "/images/products/tshirt-men.jpg",
                             IsAvailable = true,
@@ -645,9 +690,9 @@ namespace Project1_Api.Migrations
                         },
                         new
                         {
-                            Id = new Guid("502d001e-2b58-43f2-8e04-6f2309b31721"),
-                            CategoryId = new Guid("e83019c1-0ac6-46da-bca9-6e8962247266"),
-                            DateCreated = new DateTime(2025, 5, 26, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(1796),
+                            Id = new Guid("b03f6ac2-4929-4100-ada2-0a50f58a52cb"),
+                            CategoryId = new Guid("781c50cb-955c-40de-b0ec-1f542e0090c4"),
+                            DateCreated = new DateTime(2025, 7, 4, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(3948),
                             Description = "Light and airy, perfect for summer.",
                             ImageUrl = "/images/products/dress-women.jpg",
                             IsAvailable = false,
@@ -662,6 +707,9 @@ namespace Project1_Api.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ApplicationUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateAdded")
@@ -682,6 +730,8 @@ namespace Project1_Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
@@ -691,28 +741,41 @@ namespace Project1_Api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8d9cea9e-2488-49a2-b667-c4295527dcef"),
-                            DateAdded = new DateTime(2025, 6, 3, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(1917),
-                            ProductId = new Guid("a3f1d105-f357-4173-9a62-be533aa7dd99"),
+                            Id = new Guid("6f2efbfd-52f5-4b93-b899-3b33fc048aab"),
+                            DateAdded = new DateTime(2025, 7, 12, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(4129),
+                            ProductId = new Guid("859dd085-223b-4f0e-a8b5-ddc4912aceef"),
                             Quantity = 1,
-                            UserId = new Guid("23476a76-c69a-4bef-8c68-467832b72c4f")
+                            UserId = new Guid("6449ba12-6618-4ddc-a297-02b02461b592")
                         },
                         new
                         {
-                            Id = new Guid("7791b420-259d-4039-bb3a-1519cecf0c3e"),
-                            DateAdded = new DateTime(2025, 6, 4, 10, 32, 33, 79, DateTimeKind.Utc).AddTicks(1922),
-                            ProductId = new Guid("e6097226-3a38-4a82-ac10-8ddb5a8819ce"),
+                            Id = new Guid("0240a0cd-b256-437b-9dac-e37ad9f17d71"),
+                            DateAdded = new DateTime(2025, 7, 13, 7, 44, 19, 899, DateTimeKind.Utc).AddTicks(4134),
+                            ProductId = new Guid("e494daf4-f457-4e63-a1c1-d7b1b41aabb4"),
                             Quantity = 2,
-                            UserId = new Guid("23476a76-c69a-4bef-8c68-467832b72c4f")
+                            UserId = new Guid("6449ba12-6618-4ddc-a297-02b02461b592")
                         },
                         new
                         {
-                            Id = new Guid("27c92d8f-9826-4917-8f1c-0b1f5a828527"),
-                            DateAdded = new DateTime(2025, 6, 5, 5, 32, 33, 79, DateTimeKind.Utc).AddTicks(2022),
-                            ProductId = new Guid("fe95b471-f8eb-40ad-9400-9b1a9e01f890"),
+                            Id = new Guid("81f1516d-5780-4d9a-8de5-79f31d1e0d74"),
+                            DateAdded = new DateTime(2025, 7, 14, 2, 44, 19, 899, DateTimeKind.Utc).AddTicks(4206),
+                            ProductId = new Guid("e73cdf56-7c04-4fa8-a8ed-8992eae0a562"),
                             Quantity = 1,
-                            UserId = new Guid("64d8122e-5e3c-4ba8-ad31-0709286d9783")
+                            UserId = new Guid("445a39a0-beda-40fb-a1e7-81c7c503ea9f")
                         });
+                });
+
+            modelBuilder.Entity("Domain.Models.Order", b =>
+                {
+                    b.HasOne("ApplicationUser", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -766,26 +829,15 @@ namespace Project1_Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Order", b =>
+            modelBuilder.Entity("Project1_Api.Models.OrderItem", b =>
                 {
-                    b.HasOne("ApplicationUser", "User")
-                        .WithMany("Orders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Project1.Models.OrderItem", b =>
-                {
-                    b.HasOne("Order", "Order")
+                    b.HasOne("Domain.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project1.Models.Product", "Product")
+                    b.HasOne("Project1_Api.Models.Product", "Product")
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -796,9 +848,9 @@ namespace Project1_Api.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Project1.Models.Product", b =>
+            modelBuilder.Entity("Project1_Api.Models.Product", b =>
                 {
-                    b.HasOne("Project1.Models.Category", "Category")
+                    b.HasOne("Project1_Api.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -809,19 +861,22 @@ namespace Project1_Api.Migrations
 
             modelBuilder.Entity("ShoppingCartItem", b =>
                 {
-                    b.HasOne("Project1.Models.Product", "Product")
+                    b.HasOne("ApplicationUser", null)
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("Project1_Api.Models.Product", "Product")
                         .WithMany("ShoppingCartItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApplicationUser", "User")
-                        .WithMany("ShoppingCartItems")
-                        .HasForeignKey("UserId");
+                    b.HasOne("ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ApplicationUser", b =>
@@ -831,17 +886,17 @@ namespace Project1_Api.Migrations
                     b.Navigation("ShoppingCartItems");
                 });
 
-            modelBuilder.Entity("Order", b =>
+            modelBuilder.Entity("Domain.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("Project1.Models.Category", b =>
+            modelBuilder.Entity("Project1_Api.Models.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Project1.Models.Product", b =>
+            modelBuilder.Entity("Project1_Api.Models.Product", b =>
                 {
                     b.Navigation("OrderItems");
 

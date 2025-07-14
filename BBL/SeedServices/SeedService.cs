@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DAL.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Project1_Api.Data;
 using Project1.Models;
 
 namespace Project1.SeedServices

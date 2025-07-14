@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Project1_Api.Models
+namespace Domain.Models
 {
     public class Category
     {

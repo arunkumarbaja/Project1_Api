@@ -1,125 +1,128 @@
-﻿@model Domain.Models.Order
+﻿@using Web.Models.ViewModels // Ensure the namespace containing 'OrderItem' is included  
+@model Web.Models.ViewModels.InvoiceClass  
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Invoice - @Model.Id</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            font-size: 14px;
-        }
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta charset="utf-8" />  
+    <title>Invoice - @Model.OrderInvoice.Id</title>  
+    <style>  
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 30px;  
+            font-size: 14px;  
+        }  
 
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+        h1 {  
+            text-align: center;  
+            margin-bottom: 10px;  
+        }  
 
-        .header, .footer {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .header, .footer {  
+            text-align: center;  
+            margin-bottom: 30px;  
+        }  
 
-        .section {
-            margin-bottom: 25px;
-        }
+        .section {  
+            margin-bottom: 25px;  
+        }  
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        table {  
+            width: 100%;  
+            border-collapse: collapse;  
+        }  
 
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
+        th, td {  
+            padding: 10px;  
+            border: 1px solid #ccc;  
+        }  
 
-        th {
-            background-color: #f2f2f2;
-        }
+        th {  
+            background-color: #f2f2f2;  
+        }  
 
-        .total {
-            text-align: right;
-            font-weight: bold;
-        }
+        .total {  
+            text-align: right;  
+            font-weight: bold;  
+        }  
 
-        .summary-table td {
-            border: none;
-            padding: 4px;
-        }
-    </style>
-</head>
-<body>
+        .summary-table td {  
+            border: none;  
+            padding: 4px;  
+        }  
+    </style>  
+</head>  
+<body>  
 
-    <div class="header">
-        <h1>🧾 Invoice</h1>
-        <p>ShopEase - Your Order Summary</p>
-    </div>
+    <div class="header">  
+        <h1>🧾 Invoice</h1>  
+        <p>ShopEase - Your Order Summary</p>  
+    </div>  
 
-    <div class="section">
-        <table class="summary-table">
-            <tr>
-                <td><strong>Order ID:</strong></td>
-                <td>@Model.Id</td>
-            </tr>
-            <tr>
-                <td><strong>Order Date:</strong></td>
-                <td>@Model.OrderDate.ToString("dd MMM yyyy")</td>
-            </tr>
-            <tr>
-                <td><strong>Status:</strong></td>
-                <td>@Model.Status</td>
-            </tr>
-            <tr>
-                <td><strong>Transaction ID:</strong></td>
-                <td>@Model.PaymentTransactionId</td>
-            </tr>
-        </table>
-    </div>
+    <div class="section">  
+        <table class="summary-table">  
+            <tr>  
+                <td><strong>Order ID:</strong></td>  
+                <td>@Model.OrderInvoice.Id</td>  
+            </tr>  
+            <tr>  
+                <td><strong>Order Date:</strong></td>  
+                <td>@Model.OrderInvoice.OrderDate.ToString("dd MMM yyyy")</td>  
+            </tr>  
 
-    <div class="section">
-        <h3>Shipping Address</h3>
-        <p>
-            @Model.ShippingAddressStreet<br />
-            @Model.ShippingAddressCity, @Model.ShippingAddressState - @Model.ShippingAddressPostalCode<br />
-            @Model.ShippingAddressCountry
-        </p>
-    </div>
+            <tr>  
+                <td><strong>Transaction ID:</strong></td>  
+                <td>@Model.OrderInvoice.PaymentTransactionId</td>  
+            </tr>  
+        </table>  
+    </div>  
 
-    <div class="section">
-        <h3>Order Items</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
+    <div class="section">  
+        <h3>Shipping Address</h3>  
+        <p>  
+            @Model.OrderInvoice.ShippingAddressStreet<br />  
+            @Model.OrderInvoice.ShippingAddressCity, @Model.OrderInvoice.ShippingAddressState - @Model.OrderInvoice.ShippingAddressPostalCode<br />  
+            @Model.OrderInvoice.ShippingAddressCountry  
+        </p>  
+    </div>  
+
+    <div class="section">  
+        <h3>Order Items</h3>  
+        <table>  
+            <thead>  
+                <tr>  
+                    <th>Product</th>  
+                    <th>Unit Price</th>  
+                    <th>Quantity</th>  
+                    <th>Subtotal</th>  
+                </tr>  
+            </thead>  
             <tbody>
-                @foreach (var item in Model.OrderItems)
+                @foreach (var item in Model.OrderItemInvoice )
                 {
-                    <tr>
-                        <td>@item.Product.Name</td>
-                        <td>$@item.Product.Price</td>
-                        <td>@item.Quantity</td>
-                        <td>$@(item.Product.Price* item.Quantity)</td>
-                    </tr>
+                    if (item?.Product != null)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>$@item.Product.Price</td>
+                            <td>@item.Quantity</td>
+                            <td>$@(item.Product.Price* item.Quantity)</td>
+                        </tr>
+                    }
                 }
-                <tr>
-                    <td colspan="3" class="total">Total Amount:</td>
-                    <td class="total">$@Model.TotalAmount</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="footer">
-        <p>Thank you for shopping with ShopEase! 🛒</p>
-    </div>
 
-</body>
+                <tr>  
+                    <td colspan="3" class="total">Total Amount:</td>  
+                    <td class="total">$@Model.OrderInvoice.TotalAmount</td>  
+                </tr>  
+            </tbody>  
+        </table>  
+    </div>  
+
+    <div class="footer">  
+        <p>Thank you for shopping with ShopEase! 🛒</p>  
+    </div>  
+
+</body>  
 </html>

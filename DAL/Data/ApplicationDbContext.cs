@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Project1_Api.Models;
-using OrderStatus = Domain.Models.OrderStatus;
 
-namespace Project1_Api.Data
+namespace DAL.Data
 {
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid, // User, Role, Key type

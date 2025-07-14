@@ -2,7 +2,6 @@
 using DTO.ShoppingCart;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Project1_Api.Models;
 using System.Linq;
 using System.Security.Claims;
 

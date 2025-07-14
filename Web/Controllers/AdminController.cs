@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Project1_Api.Models;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;

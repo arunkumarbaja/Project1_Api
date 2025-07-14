@@ -1,7 +1,8 @@
-﻿using Domain;
+﻿using DAL.Data;
+using Domain;
+using Domain.Models;
 using DTO.ShoppingCart;
 using Microsoft.EntityFrameworkCore;
-using Project1_Api.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

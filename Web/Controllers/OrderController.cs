@@ -1,4 +1,5 @@
 ﻿using BBL.ECommerceServices.ShoppingServices;
+using DAL.Data;
 using Domain.Models;
 using DTO.OrderDto;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Project1_Api.NewFolder;
 using SelectPdf;
@@ -15,6 +17,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Web.Models.ViewModels;
 using static Web.Controllers.CartController;
 
 namespace Web.Controllers
@@ -29,8 +32,9 @@ namespace Web.Controllers
 
         private readonly IEmailService _emailService;
 
+        private ApplicationDbContext _context;
 
-        public OrderController(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager, IShoppingCartService shoppingCartService, IEmailService emailService)
+        public OrderController(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager, IShoppingCartService shoppingCartService, IEmailService emailService, ApplicationDbContext applicationDbContext)
         {
             _userManager = userManager;
             _httpClient = httpClientFactory.CreateClient();
@@ -38,6 +42,8 @@ namespace Web.Controllers
             _httpClient.BaseAddress = new Uri("https://localhost:7079/"); // Update with your actual API base URL
             _shoppingCartService = shoppingCartService;
             _emailService = emailService;
+            _context = applicationDbContext;
+
         }
         private void SetToken()
         {
@@ -149,8 +155,22 @@ namespace Web.Controllers
             if (order == null)
                 return NotFound();
 
+
+            // retriving orderitems
+
+            List<OrderItem> orderItems = await _context.OrderItems
+    .Include(oi => oi.Product)
+    .Where(oi => oi.OrderId == orderId)
+    .ToListAsync();
+
+            InvoiceClass invoiceObject = new InvoiceClass
+            {
+                OrderInvoice = order,
+                OrderItemInvoice = orderItems.Where(i => i != null).ToList()
+            };
+
             // Render Razor view to HTML
-            string htmlContent = await this.RenderViewAsync("DownloadInvoice", order, true);
+            string htmlContent = await this.RenderViewAsync("DownloadInvoice", invoiceObject, true);
 
             // Convert HTML to PDF
             HtmlToPdf converter = new HtmlToPdf();
@@ -192,5 +212,4 @@ namespace Web.Controllers
             return sw.ToString();
         }
     }
-
 }

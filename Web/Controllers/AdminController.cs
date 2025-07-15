@@ -109,13 +109,13 @@ namespace Web.Controllers
 
             return View(product);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, UpdateProductDto product)
         {
             if (id != product.Id || !ModelState.IsValid)
                 return View(product);
-
-
 
             var jsonContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(product), System.Text.Encoding.UTF8, "application/json");
 
@@ -133,6 +133,8 @@ namespace Web.Controllers
             }
             return View(product);
         }
+
+
         // GET: Products/Delete/{id}
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)

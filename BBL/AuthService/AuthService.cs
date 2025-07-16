@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 
-namespace Project1_Api.AuthService
+namespace BBL.AuthService
 {
     public class AuthService : IAuthService
     {
@@ -24,7 +24,6 @@ namespace Project1_Api.AuthService
             _userManager = userManager;
             _configuration = configuration;
         }
-
         public async Task<string> GenerateTokenAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);

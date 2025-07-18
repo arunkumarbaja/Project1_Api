@@ -16,6 +16,10 @@ namespace Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly HttpClient _httpClient;
 
+
+
+
+
         public AdminController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;

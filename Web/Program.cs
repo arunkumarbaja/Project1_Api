@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project1_Api.NewFolder;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,18 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 
 
+
+//--------configuring logging
+builder.Host.UseSerilog((HostBuilderContext context,
+    IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
+{
+    //Reading Configuration from Built-in IConfiguration 
+    loggerConfiguration.ReadFrom.Configuration(context.Configuration)
+    //services and make avilable them to serilog
+    .ReadFrom.Services(services);
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,6 +86,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+app.Logger.LogDebug("debug-message");
+app.Logger.LogInformation("information message");
+app.Logger.LogWarning("log message");
+app.Logger.LogError("error message");
+app.Logger.LogCritical("critical message");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -1,4 +1,4 @@
-﻿namespace Project1_Api.AuthService
+﻿namespace BBL.AuthService
 {
     public class TokenResponse
     {

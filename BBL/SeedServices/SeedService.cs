@@ -1,13 +1,14 @@
 ﻿using DAL.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Project1.Models;
 
 namespace Project1.SeedServices
 {
     public  class SeedService
     {
-       
+        
         public async static void SeedDatabase(IServiceProvider serviceProvider)
         {
             var scope = serviceProvider.CreateScope();
@@ -16,6 +17,7 @@ namespace Project1.SeedServices
             var roleManager = scope.ServiceProvider.GetService<RoleManager<ApplicationRole>>();
             try
             {
+
                 //ensuring whether database is created or not
 
                 await context!.Database.EnsureCreatedAsync();

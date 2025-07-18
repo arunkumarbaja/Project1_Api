@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Project1_Api.AuthService;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Sockets;

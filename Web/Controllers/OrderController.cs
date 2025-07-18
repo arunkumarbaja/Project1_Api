@@ -33,8 +33,9 @@ namespace Web.Controllers
         private readonly IEmailService _emailService;
 
         private ApplicationDbContext _context;
+        private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager, IShoppingCartService shoppingCartService, IEmailService emailService, ApplicationDbContext applicationDbContext)
+        public OrderController(IHttpClientFactory httpClientFactory, IHttpContextAccessor contextAccessor,UserManager<ApplicationUser> userManager, IShoppingCartService shoppingCartService, IEmailService emailService, ApplicationDbContext applicationDbContext, ILogger<OrderController> logger)
         {
             _userManager = userManager;
             _httpClient = httpClientFactory.CreateClient();
@@ -43,7 +44,7 @@ namespace Web.Controllers
             _shoppingCartService = shoppingCartService;
             _emailService = emailService;
             _context = applicationDbContext;
-
+            _logger = logger;
         }
         private void SetToken()
         {
@@ -58,18 +59,24 @@ namespace Web.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
+            {
+                _logger.LogWarning("User not logged in when accessing Order Index.");
                 return RedirectToAction("Login", "Account");
+            }
 
+            _logger.LogInformation("Fetching orders for user {UserId}", userId);
             var response = await _httpClient.GetAsync($"api/order/user/{userId}");
 
             if (!response.IsSuccessStatusCode)
             {
+                _logger.LogError("Failed to fetch orders for user {UserId}. StatusCode: {StatusCode}", userId, response.StatusCode);
                 TempData["Error"] = "Unable to fetch orders.";
                 return View(new List<OrderResponseDto>());
             }
 
             var content = await response.Content.ReadAsStringAsync();
             var orders = JsonConvert.DeserializeObject<List<OrderResponseDto>>(content);
+            _logger.LogInformation("Fetched {OrderCount} orders for user {UserId}", orders?.Count ?? 0, userId);
 
             return View(orders);
         }
@@ -78,12 +85,19 @@ namespace Web.Controllers
         public async Task<IActionResult> PlaceOrder()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null) return RedirectToAction("Login", "Account");
+            if (userId == null)
+            {
+                _logger.LogWarning("User not logged in when trying to place an order.");
+                return RedirectToAction("Login", "Account");
+            }
 
             // 1. Get cart items
             var cartItems = await _shoppingCartService.GetCartItemsAsync(Guid.Parse(userId));
             if (cartItems == null || !cartItems.Any())
+            {
+                _logger.LogInformation("User {UserId} tried to place an order with an empty cart.", userId);
                 return RedirectToAction("Index"); // or show empty cart msg
+            }
 
             // 2. Build CreateOrderDto
             var orderDto = new CreateOrderDto
@@ -100,7 +114,9 @@ namespace Web.Controllers
                     Quantity = ci.Quantity
                 }).ToList()
             };
-          
+
+            _logger.LogInformation("Placing order for user {UserId} with {ItemCount} items.", userId, orderDto.OrderItems.Count);
+
             // 3. Send request to API
             var request = new StringContent(JsonConvert.SerializeObject(orderDto), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("api/order/create", request);
@@ -108,39 +124,42 @@ namespace Web.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var userEmail = User.FindFirst(ClaimTypes.Email)!.Value;
-
                 var user = await _userManager.FindByEmailAsync(userEmail);
-                if(userEmail != null)
+                if (userEmail != null)
                 {
                     //sending email regrding order placement
                     await _emailService.SendOrderConfirmationEmailAsync(user!.Email!, user.FirstName, Guid.NewGuid().ToString(), DateTime.UtcNow, user.ShippingAddressStreet, user.ShippingAddressCity, user.ShippingAddressState, user.ShippingAddressPostalCode, user.ShippingAddressCountry);
-
+                    _logger.LogInformation("Order confirmation email sent to {Email}.", userEmail);
                 }
-
-
 
                 // 4. Clear cart
                 await _shoppingCartService.ClearCartAsync(Guid.Parse(userId));
-                return RedirectToAction("Index","Order");
+                _logger.LogInformation("Cart cleared for user {UserId} after order placement.", userId);
+                return RedirectToAction("Index", "Order");
             }
 
+            _logger.LogError("Failed to place order for user {UserId}. StatusCode: {StatusCode}", userId, response.StatusCode);
             TempData["Error"] = "Failed to place order.";
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
         public async Task<IActionResult> DownloadInvoice(Guid orderId)
         {
-
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null) return RedirectToAction("Login", "Account");
+            if (userId == null)
+            {
+                _logger.LogWarning("User not logged in when trying to download invoice.");
+                return RedirectToAction("Login", "Account");
+            }
 
+            _logger.LogInformation("User {UserId} requested invoice for order {OrderId}.", userId, orderId);
 
             // Fetch order details from DB
-
             var response = await _httpClient.GetAsync($"api/order/{orderId}");
 
             if (!response.IsSuccessStatusCode)
             {
+                _logger.LogError("Failed to fetch order {OrderId} for invoice. StatusCode: {StatusCode}", orderId, response.StatusCode);
                 TempData["Error"] = "Unable to fetch orders.";
                 return View(new Order());
             }
@@ -151,17 +170,17 @@ namespace Web.Controllers
                 PropertyNameCaseInsensitive = true
             });
 
-
             if (order == null)
+            {
+                _logger.LogWarning("Order {OrderId} not found for invoice download.", orderId);
                 return NotFound();
-
+            }
 
             // retriving orderitems
-
             List<OrderItem> orderItems = await _context.OrderItems
-    .Include(oi => oi.Product)
-    .Where(oi => oi.OrderId == orderId)
-    .ToListAsync();
+                .Include(oi => oi.Product)
+                .Where(oi => oi.OrderId == orderId)
+                .ToListAsync();
 
             InvoiceClass invoiceObject = new InvoiceClass
             {
@@ -178,6 +197,8 @@ namespace Web.Controllers
 
             byte[] pdf = doc.Save();
             doc.Close();
+
+            _logger.LogInformation("Invoice PDF generated for order {OrderId}.", orderId);
 
             return File(pdf, "application/pdf", $"DownloadInvoice_{orderId}.pdf");
         }

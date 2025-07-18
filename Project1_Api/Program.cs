@@ -1,3 +1,4 @@
+using BBL.AuthService;
 using BBL.ECommerceServices.CategoryService;
 using BBL.ECommerceServices.OrderService;
 using BBL.ECommerceServices.ProductService;
@@ -11,7 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Project1_Api.AuthService;
+using Project1_Api.Exception;
 using Project1_Api.NewFolder;
+using Serilog;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -116,7 +119,28 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
+
+//--------------configuring logging
+
+builder.Host.UseSerilog((HostBuilderContext context,
+    IServiceProvider services, LoggerConfiguration loggerConfiguration) =>
+{
+    //Reading Configuration from Built-in IConfiguration 
+    loggerConfiguration.ReadFrom.Configuration(context.Configuration)
+    //services and make avilable them to serilog
+    .ReadFrom.Services(services);
+});
+
+
 var app = builder.Build();
+
+//app.Logger.LogDebug("debug-message");
+//app.Logger.LogInformation("information message");
+//app.Logger.LogWarning("log message");
+//app.Logger.LogError("error message");
+//app.Logger.LogCritical("critical message");
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -124,6 +148,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 
 app.UseHttpsRedirection();
 

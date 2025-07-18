@@ -19,7 +19,7 @@ namespace Web.Controllers
 
 
 
-
+        // Constructor to inject dependencies
         public AdminController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;

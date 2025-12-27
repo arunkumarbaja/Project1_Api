@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BBL\BBL.csproj" />
+    <ProjectReference Include="..\Project1_Api\Project1_Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
